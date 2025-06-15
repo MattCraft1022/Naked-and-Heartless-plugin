@@ -1,0 +1,1292 @@
+#Heartless commands
+
+command /Heartless:Master-Season <string> [<integer>] <string>:
+    permission: op
+    trigger:
+        if arg-3 is "confirm":
+            if arg-1 is "start":
+                broadcast "&aThe Season Has Started!"
+                play sound "minecraft:block.beacon.power_select" to all players
+                loop all players:
+                    set {session} to true
+                    console command "/team add %loop-player%"
+                    console command "/team join %loop-player% %loop-player%"
+                    console command "/team modify %loop-player% color white"
+            else if arg-1 is "end":
+                send "&cSeries ending in %arg-2% seconds"
+                set {finaletimer} to arg-2
+                while {finaletimer} is greater than 0:
+                    wait 1 second
+                    remove 1 from {finaletimer}
+
+                    if {finaletimer} is 3600:
+                        send title "&c1 Hour" with subtitle "&cleft!" to all players for 4 seconds with fadein 1 seconds and fadeout 2 seconds
+                        play sound "minecraft:ui.button.click" to all players 
+
+                    if {finaletimer} is 1800:
+                        send title "&c30 Minutes" with subtitle "&cleft!" to all players for 4 seconds with fadein 1 seconds and fadeout 2 seconds
+                        play sound "minecraft:ui.button.click" to all players   
+
+                    if {finaletimer} is 600:
+                        send title "&c10 Minutes" with subtitle "&cleft!" to all players for 4 seconds with fadein 1 seconds and fadeout 2 seconds
+                        play sound "minecraft:ui.button.click" to all players      
+
+                    if {finaletimer} is 5:
+                        send title "&c5" to all players for 2 seconds with fadein 0 second and fadeout 0 second 
+                        play sound "ui.button.click" to all players
+
+                    if {finaletimer} is 4:
+                        send title "&c4" to all players for 2 seconds with fadein 0 second and fadeout 0 second 
+                        play sound "ui.button.click" to all players
+
+                    if {finaletimer} is 3:
+                        send title "&c3" to all players for 2 seconds with fadein 0 second and fadeout 0 second 
+                        play sound "ui.button.click" to all players
+
+                    if {finaletimer} is 2:
+                        send title "&c2" to all players for 2 seconds with fadein 0 second and fadeout 0 second
+                        play sound "ui.button.click" to all players
+
+                    if {finaletimer} is 1:
+                        send title "&c1" to all players for 2 seconds with fadein 0 second and fadeout 0 second
+                        play sound "ui.button.click" to all players
+
+                    if {finaletimer} is 0:
+                        send title "&70" to all players for 2 seconds with fadein 0 second and fadeout 2 second
+                        play sound "ui.button.click" to all players
+
+                wait 3 seconds
+                send title "&7You have..." to all players for 3.5 seconds with fadein 0.2 second and fadeout 1 second 
+                play sound "minecraft:block.conduit.ambient" to all players
+                wait 4 seconds
+                loop all players:
+                    if {heartless::*} contains loop-player:
+                        succeed(loop-player)
+                        remove loop-player from {heartless::*}
+                    else if {winnerwinnerchickendinner::*} contains loop-player:
+                        succeed(loop-player)
+                    else if {task::*} contains loop-player:
+                        fail(loop-player)
+                wait 8 seconds
+                send title "" with subtitle "&cThe series has officially concluded..." to all players for 4.5 seconds with fadein 0 second and fadeout 1 second
+                play sound "minecraft:ui.button.click" to all players
+                wait 5 seconds
+                send title "" with subtitle "&aThose who have succeeded, have won!" to all players for 4.5 seconds with fadein 0 second and fadeout 1 second
+                play sound "minecraft:ui.button.click" to all players
+                wait 5 seconds
+                send title "" with subtitle "&bAnd those who have failed or died trying..." to all players for 4.5 seconds with fadein 0 second and fadeout 1 second
+                play sound "minecraft:ui.button.click" to all players
+                wait 4 seconds
+                send title "" with subtitle "&5Better luck next time!" to all players for 4.5 seconds with fadein 0 second and fadeout 1 second
+                play sound "minecraft:ui.button.click" to all players
+                set {session} to false
+        else:
+            send "&c------ INVALID USE OF COMMAND ------"
+
+command /Heartless:Master-Session <string>:
+    permission: op
+    trigger:
+        if arg-1 is "start":
+            set {session} to true
+            broadcast "&aSession Started"
+            play sound "minecraft:block.note_block.bell" to all players
+        else if arg-1 is "end":
+            set {session} to false
+            broadcast "&cSession Ended"
+            play sound "minecraft:block.note_block.didgeridoo" to all players
+            loop all players:
+                console command "team modify %loop-player% color gray"
+                set max health of loop-player to 10
+        else:
+            send "&c------ INVALID USE OF COMMAND ------"
+
+command /Heartless:Master-Roll <string> [<string>] <integer> <string>:
+    trigger:
+        if arg-4 is "confirm":
+            if arg-1 is "hearts":
+                send "&cRolling hearts in %arg-3% seconds"
+                set {hearttimer} to arg-3
+                while {hearttimer} is greater than 0:
+                    wait 1 second
+                    remove 1 from {hearttimer}
+                broadcast "&cHearts will be rolled soon..."
+                wait 5 seconds
+                send title "&a&l3" to all players
+                play sound "ui.button.click" to all players
+                wait 2 seconds
+                send title "&e&l2" to all players
+                play sound "ui.button.click" to all players
+                wait 2 seconds 
+                send title "&c&l1" to all players
+                play sound "ui.button.click" to all players
+                wait 2 seconds
+                send title "&7&lYou will have..." to all players
+                play sound "minecraft:block.beacon.activate" to all players
+                wait 3 seconds
+                execute console command "/title @a times 0t 3s 4t"
+                set {_random} to a random integer between 1 and 4
+                set {_prevent} to {_random}
+                if arg-2 is "any":
+                    loop 25 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players 
+                        wait 1 ticks
+                    loop 15 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players
+                        wait 2 ticks
+                    loop 10 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players   
+                        wait 3 ticks
+                    loop 8 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players
+                        wait 4 ticks
+                    loop 4 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players 
+                        wait 8 ticks   
+                    loop 3 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players
+                        wait 16 ticks
+                    loop 2 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to all players
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to all players
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to all players
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to all players
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to all players
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to all players
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to all players
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to all players
+                        wait 22 ticks                                                                                                        
+                    wait 1.75 seconds
+                    loop all players:   
+                        setHeartsAny(loop-player)
+                        console command "/execute as %loop-player% at @s run playsound minecraft:entity.ender_dragon.growl master @s ~ ~ ~ 2 1"
+                else if arg-2 is "high":
+                    loop 25 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        wait 1 ticks
+                    loop 15 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        wait 2 ticks
+                    loop 10 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players 
+                        wait 3 ticks
+                    loop 8 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        wait 4 ticks
+                    loop 4 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        wait 8 ticks   
+                    loop 3 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players
+                        wait 16 ticks
+                    loop 2 times:
+                        play sound "ui.button.click" to all players
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to all players
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to all players
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to all players
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to all players 
+                        wait 22 ticks                                                                                                       
+                    wait 1.75 seconds
+                    loop all players:   
+                        setHeartsHigh(loop-player)
+                        console command "/execute as @a at @s run playsound minecraft:entity.ender_dragon.growl master @s ~ ~ ~ 2 1"
+            else if arg-1 is "challenges":
+                clear {task::*}
+                clear {heartless::*}
+                clear {winnerwinnerchickendinner::*}
+                send "&cRolling tasks in %arg-3% seconds"
+                set {tasktimer} to arg-3
+                while {tasktimer} is greater than 0:
+                    wait 1 second
+                    remove 1 from {tasktimer}
+                console command "/effect give @a darkness 20 255 true"
+                console command "/execute as @a at @s run playsound minecraft:block.portal.ambient ambient @s ~ ~ ~ 1 0.5"
+                wait 1 seconds
+                send title "&5&lThrough trials of bravery" with subtitle "" to all players for 3.5 seconds with fadein 0.2 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to all players
+                wait 4 seconds
+                send title "&b&lWhere secrets creep" with subtitle "" to all players for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to all players
+                wait 2.75 seconds
+                send title "&2&lThe winds will whisper" with subtitle "" to all players for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to all players
+                console command "/execute as @a at @s run playsound minecraft:block.portal.ambient ambient @s ~ ~ ~ 1 0.5"
+                wait 2.75 seconds
+                send title "&a&lPick up your feet" with subtitle "" to all players for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to all players
+                wait 2.75 seconds
+                send title "&e&lChoose your fate" with subtitle "" to all players for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to all players
+                wait 2.75 seconds
+                send title "&c&lOr accept DEFEAT" with subtitle "" to all players for 3 seconds with fadein 0 seconds and fadeout 1 seconds
+                console command "/execute as @a at @s run playsound minecraft:block.end_portal.spawn master @s ~ ~ ~ 2 .5"
+                wait 4 seconds
+                play sound "minecraft:item.totem.use" to all players
+                loop all players:
+                    console command "/execute as %loop-player% at @s run particle minecraft:glow_squid_ink ~ ~ ~ 1 1 1 .5 200 force @a"
+                    console command "/execute as %loop-player% at @s run particle minecraft:glow ~ ~ ~ 1 1 1 1 300 force @a"
+                    wait 3 seconds
+                    rollTasks(loop-player)
+
+command /Heartless:Master-Roll-Late-Player <offline player> <string> [<string>] <integer> <string>:
+    permission: op
+    trigger:
+        if arg-5 is "confirm":
+            if arg-2 is "hearts":
+                send "&cRolling hearts for %arg-1% in %arg-4% seconds"
+                set {hearttimer} to arg-4
+                while {hearttimer} is greater than 0:
+                    wait 1 second
+                    remove 1 from {hearttimer}
+                send "&cHearts will be rolled soon..." to arg-1
+                wait 5 seconds
+                send title "&a&l3" to arg-1
+                play sound "ui.button.click" to arg-1
+                wait 2 seconds
+                send title "&e&l2" to arg-1
+                play sound "ui.button.click" to arg-1
+                wait 2 seconds 
+                send title "&c&l1" to arg-1
+                play sound "ui.button.click" to arg-1
+                wait 2 seconds
+                send title "&7&lYou will have..." to arg-1
+                play sound "minecraft:block.beacon.activate" to arg-1
+                wait 3 seconds
+                execute console command "/title @a times 0t 3s 4t"
+                set {_random} to a random integer between 1 and 4
+                set {_prevent} to {_random}
+                if arg-3 is "any":
+                    loop 25 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1
+                        wait 1 ticks
+                    loop 15 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1
+                        wait 2 ticks
+                    loop 10 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1  
+                        wait 3 ticks
+                    loop 8 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1
+                        wait 4 ticks
+                    loop 4 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1
+                        wait 8 ticks   
+                    loop 3 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1
+                        wait 16 ticks
+                    loop 2 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 12
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 5:
+                            send title "&a&l16" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 6:
+                            send title "&a&l15" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 7:
+                            send title "&a&l14" with subtitle "&aHearts" to arg-1
+                        else if {_random} = 8:
+                            send title "&e&l13" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 9:
+                            send title "&e&l12" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 10:
+                            send title "&e&l10" with subtitle "&eHearts" to arg-1
+                        else if {_random} = 11:
+                            send title "&c&l8" with subtitle "&cHearts" to arg-1
+                        else if {_random} = 12:
+                            send title "&c&l7" with subtitle "&cHearts" to arg-1
+                        wait 22 ticks                                                                                                        
+                    wait 1.75 seconds
+                    setHeartsAny(arg-1)
+                    console command "/execute as %arg-1% at @s run playsound minecraft:entity.ender_dragon.growl master @s ~ ~ ~ 2 1"
+                else if arg-3 is "high":
+                    loop 25 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 1 ticks
+                    loop 15 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 2 ticks
+                    loop 10 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 3 ticks
+                    loop 8 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 4 ticks
+                    loop 4 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 8 ticks   
+                    loop 3 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 16 ticks
+                    loop 2 times:
+                        play sound "ui.button.click" to arg-1
+                        while {_random} = {_prevent}:
+                            set {_random} to a random integer between 1 and 4
+                        set {_prevent} to {_random}
+                        if {_random} = 1:
+                            send title "&5&l30" with subtitle "&5Hearts" to arg-1
+                        else if {_random} = 2:
+                            send title "&b&l25" with subtitle "&bHearts" to arg-1
+                        else if {_random} = 3:
+                            send title "&2&l20" with subtitle "&2Hearts" to arg-1
+                        else if {_random} = 4:
+                            send title "&2&l18" with subtitle "&2Hearts" to arg-1
+                        wait 22 ticks                                                                                                       
+                    wait 1.75 seconds   
+                    setHeartsHigh(arg-1)
+                    console command "/execute as %arg-1% at @s run playsound minecraft:entity.ender_dragon.growl master @s ~ ~ ~ 2 1"
+            else if arg-2 is "challenges":
+                clear {task::%arg-1%}
+                clear {heartless::%arg-1%}
+                clear {winnerwinnerchickendinner::%arg-1%}
+                send "&cRolling tasks for %arg-1% in %arg-4% seconds" to player
+                set {tasktimer} to arg-3
+                while {tasktimer} is greater than 0:
+                    wait 1 second
+                    remove 1 from {tasktimer}
+                console command "/effect give %arg-1% darkness 20 255 true"
+                console command "/execute as %arg-1% at @s run playsound minecraft:block.portal.ambient ambient @s ~ ~ ~ 1 0.5"
+                wait 1 seconds
+                send title "&5&lThrough trials of bravery" with subtitle "" to arg-1 for 3.5 seconds with fadein 0.2 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to arg-1
+                wait 4 seconds
+                send title "&b&lWhere secrets creep" with subtitle "" to arg-1 for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to arg-1
+                wait 2.75 seconds
+                send title "&2&lThe winds will whisper" with subtitle "" to arg-1 for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to arg-1
+                console command "/execute as @a at @s run playsound minecraft:block.portal.ambient ambient @s ~ ~ ~ 1 0.5"
+                wait 2.75 seconds
+                send title "&a&lPick up your feet" with subtitle "" to arg-1 for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to arg-1
+                wait 2.75 seconds
+                send title "&e&lYour final challenge" with subtitle "" to arg-1 for 2 seconds with fadein 0 seconds and fadeout 1 seconds
+                play sound "minecraft:block.end_portal_frame.fill" to arg-1
+                wait 2.75 seconds
+                send title "&c&lCHOOSE your fate" with subtitle "" to arg-1 for 3 seconds with fadein 0 seconds and fadeout 1 seconds
+                console command "/execute as %arg-1% at @s run playsound minecraft:block.end_portal.spawn master @s ~ ~ ~ 2 .5"
+                wait 4 seconds
+                console command "/execute as %arg-1% at @s run particle minecraft:glow_squid_ink ~ ~ ~ 1 1 1 .5 200 force @a"
+                console command "/execute as %arg-1% at @s run particle minecraft:glow ~ ~ ~ 1 1 1 1 300 force @a"
+                play sound "minecraft:item.totem.use" to arg-1
+                wait 3 seconds
+                rollTasks(arg-1)
+
+command /speak <string>:
+    trigger:
+        broadcast "&c&l<%player%> &c&l%arg-1%"
+
+command /check-online-players:
+    permission: op
+    trigger:
+        play sound "minecraft:block.note_block.harp" to player
+        send "&aCurrent Online Players:" to player
+        send " " to player
+        loop all players:
+            send "&a%loop-player%"
+
+command /Heartless:Master-GetInfo <offline player>:
+    permission: op
+    trigger:
+        set {hearts} to arg-1's max health
+        send "&c%arg-1% has %{hearts}% hearts"
+
+command /Heartless:Master-SetHearts <offline player> <integer>:
+    permission: op
+    trigger:
+        set {maxhealth} to arg-2
+        set arg-1's max health to {maxhealth}
+        set health of arg-1 to max health of arg-1
+
+command /task <string>:
+    trigger:
+        if arg-1 is "succeed":
+            if {task::*} contain player:
+                if {heartless::*} doesn't contain player:
+                    succeedCommand(player)
+                    add player to {winnerwinnerchickendinner::*}
+            else:
+                send "&cYou've already succeeded your task or you must wait until the end of the session to succeed your task."
+        else:
+            send "&c------ INVALID USE OF COMMAND ------"
+
+#Heartless events
+
+on death of player:
+    if {session} is true:
+        remove victim from {task::*}
+        set victim's gamemode to spectator
+        console command "/execute as @a at @s run playsound minecraft:entity.generic.explode master @s ~ ~ ~ 1 1"
+        console command "/execute as @a at @s run playsound minecraft:entity.elder_guardian.death master @s ~ ~ ~ 1 1"
+        console command "/execute at %victim% run particle lava ~ ~ ~ 1 2.1 1 1 250 force"
+        console command "/execute as %victim% run particle minecraft:lava ~ ~ ~ .1 .1 .1 .5 500 force"
+        console command "/execute at %victim% run particle minecraft:flash ~ ~ ~ 1 1 1 1 250 force"
+        console command "/execute at %victim% run particle minecraft:campfire_signal_smoke ~ ~ ~ 1 1 1 1 250 force"
+        console command "/team modify %victim% color gray"
+
+        strike lightning effect at the victim
+
+
+        loop items in victim's inventory:
+            drop loop-item at the victim
+    else:
+        cancel the event
+
+on tab complete of "/Heartless:Master-Season":
+    set tab completions for position 1 to "start", and "end"   
+    if tab arg-1 is "end": 
+        set tab completions for position 3 to "confirm"
+    if tab arg-1 is "start":
+        set tab completions for position 2 to "confirm"
+
+on tab complete of "/Heartless:Master-Session":
+    set tab completions for position 1 to "start", and "end"
+
+on tab complete of "/Heartless:Master-Roll":
+    set tab completions for position 1 to "hearts", and "challenges"
+    set tab completions for position 4 to "confirm"
+    if tab arg-1 is "hearts":
+        set tab completions for position 2 to "high", and "any"
+    if tab arg-1 is "challenges":
+        set tab completions for position 3 to "confirm" 
+
+on tab complete of "/Heartless:Master-Roll-Late-Player":
+    set tab completions for position 2 to "hearts", and "challenges"
+    set tab completions for position 5 to "confirm"
+    if tab arg-2 is "hearts":
+        set tab completions for position 3 to "high", and "any"
+    if tab arg-2 is "challenges":
+        set tab completions for position 4 to "confirm"
+
+on tab complete of "/task":
+    set tab completions for position 1 to "succeed"
+
+on respawn:
+    if {session} is true:
+        if player's gamemode is spectator:
+            send title "&c&lYou have died!" to player
+            play sound "minecraft:entity.wither.spawn" to player
+
+on join:
+    loop all players:
+        set tablist header of loop-player to "&dNaked and Heartless"
+        set tablist footer of loop-player to "&cGood luck!"
+        unlist all players for loop-player
+
+every second:
+    loop all players:
+        set {_helmet} to helmet of loop-player
+        set {_chestplate} to chestplate of loop-player
+        set {_leggings} to leggings of loop-player
+        set {_boots} to boots of loop-player
+        if {_helmet} is set:
+            if {_helmet} is a carved pumpkin:
+                stop
+            else if {_helmet} is a player head:
+                stop
+            else if {_helmet} is a zombie head:
+                stop
+            else if {_helmet} is a skeleton skull:
+                stop
+            else if {_helmet} is a wither skeleton skull:
+                stop
+            else if {_helmet} is a creeper head:
+                stop
+            else if {_helmet} is a piglin head:
+                stop
+            else if {_helmet} is a dragon head:
+                stop
+        if {_chestplate} is set:
+            if {_chestplate} is an elytra:
+                stop
+        if {_helmet} is set:
+            console command "/damage %loop-player% 6"
+        if {_chestplate} is set:
+            console command "/damage %loop-player% 6"
+        if {_leggings} is set:
+            console command "/damage %loop-player% 6" 
+        if {_boots} is set:
+            console command "/damage %loop-player% 6"
+
+on server list ping:
+    loop {player::*}:
+        hide loop-value from the server list
+        
+on damage of player:
+    if {heartless::*} contains victim:
+        if victim is blocking:
+            stop
+        set {_damage} to damage
+        set {_gaphearts} to victim's absorption hearts
+        if {_gaphearts} >= {_damage}:
+            subtract {_damage} from victim's absorption hearts
+            wait 1 tick
+        else:
+            set {_hearts} to victim's maximum health
+            set victim's maximum health to {_hearts} - {_damage}
+            set {_damage} to 0
+        if attacker is player:
+            if attacker is not victim:
+                cancel the event
+                send "&7You can't damage other players." to attacker
+    else if attacker is player:
+        if attacker is not victim:
+            cancel the event
+            send "&7You can't damage other players." to attacker
+    else if {session} is false:
+        cancel the event
+
+on chat:
+    if {session} is true:
+        cancel the event
+        send "You can't chat during the series dumbass" to player
+
+on pickup of totem of undying:
+    wait 1 tick
+    loop items in player's inventory:
+        if loop-item is a totem of undying:
+            remove loop-item from player's inventory
+            send "&7Totems are not allowed!" to player
+
+every seconds:
+    if {finaletimer} <= 600:
+        if {finaletimer} > 0:
+            loop all players:
+                taskTimer(loop-player)
+
+
+#Heartless functions
+
+function setHeartsAny(p: player):
+    set {_random} to a random integer between 1 and 12
+    if {_random} = 1:
+        send title "&5&l30" with subtitle "&5Hearts&f!" to {_p}
+        set {hearts::%{_p}%} to 30
+        set max health of {_p} to 30
+        set health of {_p} to max health of {_p}
+        console command "team modify %{_p}% color dark_purple"
+    else if {_random} = 2:
+        set {hearts::%{_p}%} to 25
+        set max health of {_p} to 25
+        set health of {_p} to max health of {_p}
+        send title "&b&l25" with subtitle "&bHearts&f!" to {_p}
+        console command "team modify %{_p}% color aqua"
+    else if {_random} = 3:
+        set {hearts::%{_p}%} to 20
+        set max health of {_p} to 20
+        set health of {_p} to max health of {_p}
+        send title "&2&l20" with subtitle "&2Hearts&f!" to {_p}
+        console command "team modify %{_p}% color dark_green"
+    else if {_random} = 4:
+        set {hearts::%{_p}%} to 18
+        set max health of {_p} to 18
+        set health of {_p} to max health of {_p}
+        send title "&2&l18" with subtitle "&2Hearts&f!" to {_p}
+        console command "team modify %{_p}% color dark_green"
+    else if {_random} = 5:
+        set {hearts::%{_p}%} to 16
+        set max health of {_p} to 16
+        set health of {_p} to max health of {_p}
+        send title "&a&l16" with subtitle "&aHearts&f!" to {_p}
+        console command "team modify %{_p}% color green"
+    else if {_random} = 6:
+        set {hearts::%{_p}%} to 15
+        set max health of {_p} to 15
+        set health of {_p} to max health of {_p}
+        send title "&a&l15" with subtitle "&aHearts&f!" to {_p}
+        console command "team modify %{_p}% color green"
+    else if {_random} = 7:
+        set {hearts::%{_p}%} to 14
+        set max health of {_p} to 14
+        set health of {_p} to max health of {_p}
+        send title "&a&l14" with subtitle "&aHearts&f!" to {_p}
+        console command "team modify %{_p}% color green"
+    else if {_random} = 8:
+        set {hearts::%{_p}%} to 13
+        set max health of {_p} to 13
+        set health of {_p} to max health of {_p}
+        send title "&a&l13" with subtitle "&aHearts&f!" to {_p}
+        console command "team modify %{_p}% color green"
+    else if {_random} = 9:
+        set {hearts::%{_p}%} to 12
+        set max health of {_p} to 12
+        set health of {_p} to max health of {_p}
+        send title "&e&l12" with subtitle "&eHearts&f!" to {_p}
+        console command "team modify %{_p}% color yellow"
+    else if {_random} = 10:
+        set {hearts::%{_p}%} to 10
+        set max health of {_p} to 10
+        set health of {_p} to max health of {_p}
+        send title "&e&l10" with subtitle "&eHearts&f!" to {_p}
+        console command "team modify %{_p}% color yellow"
+    else if {_random} = 11:
+        set {hearts::%{_p}%} to 8
+        set max health of {_p} to 8
+        set health of {_p} to max health of {_p}
+        send title "&c&l8" with subtitle "&cHearts&f!" to {_p}
+        console command "team modify %{_p}% color red"
+    else if {_random} = 12:
+        set {hearts::%{_p}%} to 7
+        set max health of {_p} to 7
+        set health of {_p} to max health of {_p}
+        send title "&c&l7" with subtitle "&cHearts&f!" to {_p}
+        console command "team modify %{_p}% color red"
+    else:
+        setHeartsAny({_p})
+
+function setHeartsHigh(p: player):
+    set {_random} to a random integer between 1 and 4
+    if {_random} = 1:
+        send title "&5&l30" with subtitle "&5Hearts&f!" to {_p}
+        set {hearts::%{_p}%} to 30
+        set max health of {_p} to 30
+        set health of {_p} to max health of {_p}
+        console command "team modify %{_p}% color dark_purple"
+    else if {_random} = 2:
+        set {hearts::%{_p}%} to 25
+        set max health of {_p} to 25
+        set health of {_p} to max health of {_p}
+        send title "&b&l25" with subtitle "&bHearts&f!" to {_p}
+        console command "team modify %{_p}% color aqua"
+    else if {_random} = 3:
+        set {hearts::%{_p}%} to 20
+        set max health of {_p} to 20
+        set health of {_p} to max health of {_p}
+        send title "&2&l20" with subtitle "&2Hearts&f!" to {_p}
+        console command "team modify %{_p}% color dark_green"
+    else if {_random} = 4:
+        set {hearts::%{_p}%} to 18
+        set max health of {_p} to 18
+        set health of {_p} to max health of {_p}
+        send title "&2&l18" with subtitle "&2Hearts&f!" to {_p}
+        console command "team modify %{_p}% color dark_green"
+    else:
+        setHeartsHigh({_p})
+
+function rollTasks(p: player):
+    add {_p} to {task::*}
+    play sound "minecraft:block.enchantment_table.use" to {_p}
+    set {task} to a random integer between 1 and 6
+    if {task} = 1:
+        set {hearts::%{_p}%} to 30
+        set max health of {_p} to 30
+        set health of {_p} to max health of {_p}
+        set {_book} to written book
+        set {task1::%{_p}%} to "&c&lYour final challenge:%nl% %nl%&0For the rest of the session you will have 30 hearts with no regen. Your task will auto succeed at the end of the session. Good luck!"
+        set book content of {_book} to "%{task1::%{_p}%}%"
+        set the book title of {_book} to "<light red>%{_p}%'s Challenge"
+        set the book author of {_book} to "<purple><bold>The Heartbreaker"
+        set {taskbook::%{_p}%} to {_book}
+        give or drop {_book} to {_p}
+        add {_p} to {heartless::*}
+    if {task} = 2:
+        set {_book} to written book
+        set {task2::%{_p}%} to "&c&lYour final challenge:%nl% %nl%&0Solo fight the Ender Dragon. Good luck!%nl% %nl%When you are done with your task. Do ""/task succeed""! If you don't succeed the task in the given time, you will instantly perish."
+        set book content of {_book} to "%{task2::%{_p}%}%"
+        set the book title of {_book} to "<light red>%{_p}%'s Challenge"
+        set the book author of {_book} to "<purple><bold>The Heartbreaker"
+        set {taskbook::%{_p}%} to {_book}
+        give or drop {_book} to {_p}
+    if {task} = 3:
+        set {_book3} to written book
+        set page 1 of {_book3} to "&c&lYour final challenge:%nl% %nl%&0Obtain a mob skull, you can use any method you want. You just need to get it.%nl% %nl%When you are done with your task. Do ""/task succeed""! If you don't succeed the task in the given time," 
+        set page 2 of {_book3} to "you will instantly perish."
+        set the book title of {_book3} to "<light red>%{_p}%'s Challenge"
+        set the book author of {_book3} to "<purple><bold>The Heartbreaker"
+        set {taskbook::%{_p}%} to {_book3}
+        give or drop {_book3} to {_p}
+    if {task} = 4:
+        set {_book4} to written book
+        set page 1 of {_book4} to "&c&lYour final challenge:%nl% %nl%&0Defeat a raid. You can get others to help you and you can use whatever you need to in order to succeed.%nl% %nl%When you are done with your task. Do ""/task succeed""! If you don't succeed the"
+        set page 2 of {_book4} to "task in the given time, you will instantly perish."
+        set the book title of {_book4} to "<light red>%{_p}%'s Challenge"
+        set the book author of {_book4} to "<purple><bold>The Heartbreaker"
+        set {taskbook::%{_p}%} to {_book4}
+        give or drop {_book4} to {_p}
+    if {task} = 5:
+        set {_book5} to written book
+        set page 1 of {_book5} to "&c&lYour final challenge:%nl% %nl%&0Kill a boss. You can get others to help you and you can use whatever you need to in order to succeed. The bosses range from; Ender Dragon, Wither, Elder Guardian, Warden, and a Breeze trial."
+        set page 2 of {_book5} to "When you are done with your task. Do ""/task succeed""! If you don't succeed the task in the given time, you will instantly perish."
+        set the book title of {_book5} to "<light red>%{_p}%'s Challenge"
+        set the book author of {_book5} to "<purple><bold>The Heartbreaker"
+        set {taskbook::%{_p}%} to {_book5}
+        give or drop {_book5} to {_p}
+    if {task} = 6:
+        set {_book6} to written book
+        set page 1 of {_book6} to "&c&lYour final challenge:%nl% %nl%&0Kill a Warden. You can get others to help you and you can use whatever you need to in order to succeed.%nl% %nl%When you are done with your task. Do ""/task succeed""! If you don't succeed the "
+        set page 2 of {_book6} to "task in the given time, you will instantly perish."
+        set the book title of {_book6} to "<light red>%{_p}%'s Challenge"
+        set the book author of {_book6} to "<purple><bold>The Heartbreaker"
+        set {taskbook::%{_p}%} to {_book6}
+        give or drop {_book6} to {_p}
+
+function taskTimer(p:player):
+    while {finaletimer} > 0:
+        wait 0.1 seconds
+        set {_time} to {finaletimer}
+        set {_minutes} to floor({_time} / 60)
+        set {_seconds} to {_time} - ({_minutes} * 60)
+        if {_seconds} < 10:
+            set {_formatted} to "%{_minutes}%:0%{_seconds}%"
+        else:
+            set {_formatted} to "%{_minutes}%:%{_seconds}%"
+        send action bar "&cTime left: %{_formatted}%" to {_p}
+    send action bar "&7Time left: 00:00" to {_p}
+
+function succeedCommand(p: player):
+    send "&aYou have succeeded your task! All you have left to do is survive, good luck!" to {_p}
+    play sound "minecraft:block.note_block.bell" to {_p}
+    wait 5 ticks
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    remove {_p} from {task::*}
+    loop items in {_p}'s inventory:
+        if loop-item is written book:
+            clear loop-item
+            delete loop-item
+
+function succeed(p: player):
+    send title "&aWon!" to {_p} for 3 seconds with fadein 0 second and fadeout 1 second 
+    play sound "minecraft:block.note_block.bell" to {_p}
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    wait 5 tick
+    launch star shaped colored light green fading to green at {_p}'s location with duration 1
+    remove {_p} from {task::*}
+    loop items in {_p}'s inventory:
+        if loop-item is written book:
+            clear loop-item
+            delete loop-item
+
+function fail(p: player):
+    send title "&cFailed..." to {_p} for 3 seconds with fadein 0 second and fadeout 1 second
+    play sound "minecraft:block.beacon.deactivate" to {_p}
+    wait 1 second
+    set {xpos::%{_p}%} to {_p}'s x-coordinate
+    set {zpos::%{_p}%} to {_p}'s z-coordinate
+    set {ypos::%{_p}%} to {_p}'s y-coordinate
+    set {p::%{_p}%} to 60
+    while {p::%{_p}%} is greater than 0:
+        wait 1 tick
+        remove 1 from {p::%{_p}%}
+        console command "/execute as %{_p}% at @s run tp %{_p}% %{xpos::%{_p}%}% %{ypos::%{_p}%}% %{zpos::%{_p}%}%"
+        if {p::%{_p}%} = 15:
+            execute console command "execute as %{_p}% at @s run particle minecraft:flame ~ ~ ~ .1 .1 .1 1 1250 force"
+            play sound "minecraft:block.respawn_anchor.deplete" to {_p}
+        if {p::%{_p}%} = 30:
+            execute console command "execute as %{_p}% at @s run particle minecraft:flame ~ ~ ~ .1 .1 .1 1 1250 force"
+            play sound "minecraft:block.respawn_anchor.deplete" to {_p}
+        if {p::%{_p}%} = 45:
+            execute console command "execute as %{_p}% at @s run particle minecraft:flame ~ ~ ~ .1 .1 .1 1 1250 force"
+            play sound "minecraft:block.respawn_anchor.deplete" to {_p}
+    kill {_p} 
+    wait 1 seconds
+    set {session} to false
+
+#holy shit this plugin is massive, but yk what else is massive >:D
